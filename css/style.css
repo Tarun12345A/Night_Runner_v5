@@ -1,0 +1,141 @@
+/* ============================= base / theme ============================= */
+:root {
+  --ink: #0d0b13; --cabinet: #211d2c; --cabinet-edge: #3a3450;
+  --pink: #ff3d7a; --cyan: #2fe6c9; --amber: #ffb545; --cream: #f4eee0; --dim: #9a92ad;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  background: radial-gradient(ellipse at top, #241f30 0%, #0d0b13 70%);
+  color: var(--cream); font-family: 'Space Mono', monospace;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.df { font-family: 'Press Start 2P', monospace; }
+
+#cabinet {
+  background: linear-gradient(180deg, var(--cabinet) 0%, #191521 100%);
+  border: 3px solid var(--cabinet-edge); border-radius: 22px;
+  padding: 16px 16px 20px; max-width: 960px; width: 100%; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* ============================ maximized layout =============================
+   .nr-maximized is toggled by JS (game.js) whenever the browser Fullscreen
+   API is active OR the device is a touchscreen (phone/tablet) — the latter
+   matters because iOS Safari and many mobile browsers don't actually
+   support element.requestFullscreen() at all, so relying on that API alone
+   left phones permanently boxed in with no way to reach full size. This
+   class-based layout doesn't need any special permission — it's just CSS —
+   so it works the same whether or not real OS fullscreen is available, and
+   recalculates automatically on rotation since it's driven by vw/dvh units.
+
+   V5: controls no longer take a share of the layout at all — Pause and the
+   optional lane buttons are absolutely-positioned overlays ON TOP of the
+   canvas (see #pause-overlay / #lane-buttons below), so the canvas can use
+   essentially the entire screen instead of sharing it with a control row.
+*/
+#cabinet.nr-maximized {
+  max-width: 100vw; width: 100vw;
+  height: 100vh; height: 100dvh; max-height: 100vh; max-height: 100dvh;
+  margin: 0; padding: 4px; border-radius: 0; border: none; box-shadow: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--ink); position: fixed; inset: 0; z-index: 50;
+}
+#cabinet.nr-maximized #marquee { display: none; } /* the in-canvas title card covers branding once maximized */
+#cabinet.nr-maximized #screen-frame {
+  flex: 1 1 auto; width: 100%; height: 100%; padding: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+#cabinet.nr-maximized #stage-wrap {
+  aspect-ratio: 900 / 560; /* JS sets exact px width/height; this is just a safe fallback */
+}
+#cabinet.nr-maximized #portrait-note { display: none; }
+#cabinet.nr-maximized #controls-row { display: none; } /* desktop-only keyboard hint + chips; irrelevant once maximized */
+
+/* ============================ overlay controls ==============================
+   Pause and (optionally) the lane buttons float directly on the canvas
+   instead of reserving dedicated layout space — this is the actual fix for
+   "controls take too much space / separated from gameplay" per the V5 spec.
+*/
+#pause-overlay {
+  position: absolute; top: 10px; right: 10px; z-index: 5;
+  width: 40px; height: 40px; border-radius: 50%; border: none;
+  background: rgba(20,17,28,0.55); color: var(--cream); font-weight: 700; font-size: 12px;
+  font-family: 'Space Mono', monospace; cursor: pointer; touch-action: none;
+  backdrop-filter: blur(2px); box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+#pause-overlay:active { background: rgba(255,61,122,0.55); }
+
+#lane-buttons {
+  position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5;
+  display: none; align-items: center; justify-content: space-between;
+  padding: 0 18px; pointer-events: none;
+}
+#lane-buttons.show { display: flex; }
+.lanebtn {
+  pointer-events: auto; width: 54px; height: 54px; border-radius: 50%; border: none;
+  background: rgba(58,52,80,0.5); color: var(--cream); font-size: 20px; cursor: pointer;
+  touch-action: none; backdrop-filter: blur(2px); box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+.lanebtn:active { background: rgba(47,230,201,0.55); }
+.lanebtn.brakebtn { width: 42px; height: 42px; font-size: 15px; opacity: 0.85; }
+
+/* Very short viewports (e.g. phones in landscape) — keep overlays comfortably reachable */
+@media (max-height: 480px) {
+  #pause-overlay { width: 34px; height: 34px; top: 6px; right: 6px; }
+  .lanebtn { width: 46px; height: 46px; }
+  .lanebtn.brakebtn { width: 36px; height: 36px; }
+  #lane-buttons { bottom: 8px; }
+}
+#marquee { text-align: center; padding: 10px 10px 14px; display: flex; flex-direction: column; align-items: center; }
+#logo-badge { margin-bottom: 6px; animation: glowPulse 3.2s ease-in-out infinite; }
+#marquee h1 {
+  margin: 0; font-size: clamp(15px, 3vw, 24px); letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--amber) 55%, var(--cyan));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+#marquee p { margin: 8px 0 0; font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+#credit { margin: 6px 0 0 !important; font-size: 9px !important; letter-spacing: 1.5px; color: #5a5468 !important; }
+#credit span {
+  font-weight: 700; background: linear-gradient(90deg, var(--cyan), var(--amber));
+  -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 1px;
+}
+
+#screen-frame { background: #000; border-radius: 12px; padding: 8px; border: 2px solid var(--cabinet-edge); position: relative; }
+#stage-wrap { position: relative; width: 100%; aspect-ratio: 900/560; border-radius: 6px; overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; cursor: pointer; touch-action: none; }
+
+/* ========================= responsive / mobile ========================= */
+#portrait-note {
+  display: none; font-size: 10px; text-align: center; color: var(--amber);
+  padding: 6px; background: rgba(255,181,69,0.08); border-radius: 6px; margin-top: 8px;
+}
+@media (max-width: 700px) and (orientation: portrait) { #portrait-note { display: block; } }
+
+#controls-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+#hint { font-size: 10px; color: var(--dim); line-height: 1.7; flex: 1; min-width: 200px; }
+#hint b { color: var(--cyan); }
+
+.chip-btn {
+  background: none; border: 1px solid var(--cabinet-edge); color: var(--dim);
+  border-radius: 6px; padding: 6px 10px; font-family: 'Space Mono', monospace; font-size: 10px; cursor: pointer;
+}
+.chip-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.chip-btn:focus-visible, #pause-overlay:focus-visible, .lanebtn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+#chip-row { display: flex; gap: 8px; }
+
+@media (max-width: 640px) { #hint { display: none; } #controls-row { justify-content: center; } }
+
+/* Touch devices are already auto-maximized (see .nr-maximized above) and
+   most (notably iOS Safari) don't support requestFullscreen() on arbitrary
+   elements anyway, so the desktop fullscreen button would just do nothing. */
+@media (hover: none) and (pointer: coarse) { #fullscreen-btn { display: none; } }
+
+/* ============================== animations =============================== */
+@keyframes glowPulse { 0%,100% { filter: drop-shadow(0 0 4px rgba(255,61,122,0.5)); } 50% { filter: drop-shadow(0 0 12px rgba(255,181,69,0.6)); } }
+#marquee h1 { animation: glowPulse 3.2s ease-in-out infinite; }
+
+/* Level-up / near-miss / game-over / speedometer feedback all render on the
+   canvas itself (see js/ui.js) so they inherit the exact neon palette and
+   stay perfectly in sync with game coordinates — no separate DOM overlay
+   animations are needed here. */

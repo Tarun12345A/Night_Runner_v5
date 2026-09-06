@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Night Runner — Survive the Neon Highway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='32,3 61,32 32,61 3,32' fill='%23191521' stroke='%23ff3d7a' stroke-width='3'/%3E%3Cpath d='M18 40 L26 22 H38 L46 40' fill='none' stroke='%232fe6c9' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='44' r='3.4' fill='%23ffb545'/%3E%3Ccircle cx='40' cy='44' r='3.4' fill='%23ffb545'/%3E%3C/svg%3E">
+</head>
+<body>
+<div id="cabinet">
+  <div id="marquee">
+    <div id="logo-badge" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="46" height="46">
+        <polygon points="32,3 61,32 32,61 3,32" fill="none" stroke="url(#logoGrad)" stroke-width="3"/>
+        <path d="M18 40 L26 22 H38 L46 40" fill="none" stroke="#2fe6c9" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="43" r="3.2" fill="#ffb545"/>
+        <circle cx="40" cy="43" r="3.2" fill="#ffb545"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ff3d7a"/>
+            <stop offset="1" stop-color="#2fe6c9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <h1 class="df">NIGHT RUNNER</h1>
+    <p>SURVIVE THE NEON HIGHWAY</p>
+    <p id="credit" class="df">A GAME BY <span>TARUN KUMAR DEY</span></p>
+  </div>
+
+  <div id="screen-frame">
+    <div id="stage-wrap">
+      <canvas id="game" width="900" height="560"></canvas>
+      <button id="pause-overlay" aria-label="Pause">II</button>
+      <div id="lane-buttons" aria-hidden="true">
+        <button class="lanebtn" id="btn-left" aria-label="Move left">◀</button>
+        <button class="lanebtn brakebtn" id="btn-brake" aria-label="Brake">▼</button>
+        <button class="lanebtn" id="btn-right" aria-label="Move right">▶</button>
+      </div>
+    </div>
+  </div>
+  <p id="portrait-note">📱 For the best experience, rotate your device to landscape mode.</p>
+
+  <div id="controls-row">
+    <div id="hint">
+      <div><b>←/→</b> lane change &nbsp; <b>↓</b> brake &nbsp; <b>Space/P</b> pause &nbsp; <b>M</b> sound &nbsp; <b>F</b> fullscreen</div>
+      <div>Menus: <b>arrows</b> + <b>Enter</b>, or click / tap &nbsp; · &nbsp; <b>Esc</b> always goes back</div>
+    </div>
+    <div id="chip-row">
+      <button class="chip-btn df" id="sound-toggle">SOUND: ON</button>
+      <button class="chip-btn df" id="fullscreen-btn">⛶ FULLSCREEN</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dependency order matters: each file attaches to window.NR. -->
+<script src="js/config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/garage.js"></script>
+<script src="js/health.js"></script>
+<script src="js/powerups.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/haptics.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/environment.js"></script>
+<script src="js/player.js"></script>
+<script src="js/traffic.js"></script>
+<script src="js/progression.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/input.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
